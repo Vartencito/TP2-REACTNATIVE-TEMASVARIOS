@@ -7,6 +7,7 @@ import Home from "../Screens/Home";
 import HoraTemperatura from "../Screens/HoraTemperatura";
 import NumeroEmergencia from "../Screens/NumeroEmergencia";
 import VideoFav from "../Screens/VideoFav";
+import Camara from "../Screens/Camara";
 
 const Stack = createNativeStackNavigator();
 const MainStack = () => {
@@ -19,6 +20,7 @@ const MainStack = () => {
         <Stack.Screen name="HoraTemperatura" component={HoraTemperatura} />
         <Stack.Screen name="VideoFav" component={VideoFav} />
         <Stack.Screen name="About" component={About} />
+        <Stack.Screen name="Camara" component={Camara} />
       </Stack.Navigator>
     </NavigationContainer>
   );

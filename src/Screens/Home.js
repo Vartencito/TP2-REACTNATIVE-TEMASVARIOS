@@ -106,7 +106,7 @@ const Home = ({ navigation }) => {
         <Button
           title="tomar foto"
           color={"#B399D4"}
-          onPress={() => tomarFoto()}
+          onPress={() => navigation.navigate("Camara")}
         />
         <Button
           title="cambiar fondo"
