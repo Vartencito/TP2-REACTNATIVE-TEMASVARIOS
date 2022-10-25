@@ -1,10 +1,17 @@
-import { View, Text, StyleSheet, Button, Linking } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Linking,
+  Image,
+  ImageBackground,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useRef } from "react";
 import { Accelerometer } from "expo-sensors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Camera, CameraType } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker";
 
 const Home = ({ navigation }) => {
   //accelerometer
@@ -15,14 +22,7 @@ const Home = ({ navigation }) => {
   });
   const [subscription, setSubscription] = useState(null);
   const [numE, setNumE] = useState("");
-
-  const _slow = () => {
-    Accelerometer.setUpdateInterval(1000);
-  };
-
-  const _fast = () => {
-    Accelerometer.setUpdateInterval(16);
-  };
+  const [image, setImage] = useState(null);
 
   const _subscribe = () => {
     setSubscription(
@@ -56,17 +56,34 @@ const Home = ({ navigation }) => {
     }
   }, [x, y, z]);
 
-  function round(n) {
-    if (!n) {
-      return 0;
-    }
-    return Math.floor(n * 100) / 100;
-  }
+  //seleccionar foto
 
-  //camera
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      setImage(result.uri);
+      await AsyncStorage.setItem("fondo", result.uri);
+    }
+  };
+
+  // const getImageFromLibrary = async () => {
+  //   const foto = await AsyncStorage.getItem("fondo");
+  //   if (foto === null) {
+  //     setImage(undefined);
+  //   } else {
+  //     setImage(foto);
+  //   }
+  // };
+
+  // <ImageBackground source={{uri: 'https://reactjs.org/logo-og.png"'}} styles={{flex: 1, justifyContent: 'center', alignItems:'center'}}>
+  // </ImageBackground>
 
   return (
-    <View style={styles.container}>
+    <ImageBackground source={{ uri: image }} styles={styles.container}>
       <View style={{ flexDirection: "row", padding: 10 }}>
         <Button
           title="Configurar número de emergencia"
@@ -111,11 +128,11 @@ const Home = ({ navigation }) => {
         <Button
           title="cambiar fondo"
           color={"#B399D4"}
-          onPress={() => alert("guardaste la foto")}
+          onPress={() => pickImage()}
         />
       </View>
       <StatusBar style="auto" />
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -124,7 +141,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "",
     margin: 10,
   },
 });

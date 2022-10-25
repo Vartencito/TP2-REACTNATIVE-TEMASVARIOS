@@ -1,10 +1,15 @@
-import { Camera, CameraType } from 'expo-camera';
-import { useState, useRef, useEffect } from 'react';
+import { Camera, CameraType } from "expo-camera";
+import { useState, useRef, useEffect } from "react";
 import {
-  Button, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image
-} from 'react-native';
-import * as MediaLibrary from 'expo-media-library';
-
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  SafeAreaView,
+  Image,
+} from "react-native";
+import * as MediaLibrary from "expo-media-library";
 
 export default function Camara() {
   const cameraRef = useRef();
@@ -13,7 +18,7 @@ export default function Camara() {
   const [permission, setPermission] = useState(false);
   const [libraryPermission, setLibraryPermission] = useState(false);
   const [photo, setPhoto] = useState();
-  const [flashMode, setFlashMode] = useState('off');
+  const [flashMode, setFlashMode] = useState("off");
 
   useEffect(() => {
     (async () => {
@@ -25,15 +30,19 @@ export default function Camara() {
   }, []);
 
   if (permission === undefined) {
-    return <Text>Requesting prtmissions...</Text>
+    return <Text>Requesting permissions...</Text>;
   } else if (!permission) {
-    return <Text>Permission not granted. Please re-check that in your settings.</Text>
+    return (
+      <Text>
+        Permission not granted. Please re-check that in your settings.
+      </Text>
+    );
   }
 
   function toggleCameraType() {
-    setType((current) => (
+    setType((current) =>
       current === CameraType.back ? CameraType.front : CameraType.back
-    ));
+    );
   }
 
   const onSnap = async () => {
@@ -45,61 +54,52 @@ export default function Camara() {
   };
 
   if (photo) {
-
-    let sharePic = () => {
-      shareAsync(photo.uri).then(() => {
+    let savePhoto = async () => {
+      await MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
         setPhoto(undefined);
       });
     };
-
-    let savePhoto = () => {
-      MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-        setPhoto(undefined);
-      });
-    }
-
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.preView} source={{ uri: photo.uri }} />
-        {libraryPermission ? <Button title='Guardar' onPress={savePhoto} /> : undefined}
-        <Button title='Descartar' onPress={() => setPhoto(undefined)} />
+        {libraryPermission ? (
+          <Button title="Guardar" onPress={() => savePhoto()} />
+        ) : undefined}
+        <Button title="Descartar" onPress={() => setPhoto(undefined)} />
       </SafeAreaView>
     );
   }
 
   const __handleFlashMode = () => {
-    if (flashMode === 'on') {
-      setFlashMode('off')
-    } else if (flashMode === 'off') {
-      setFlashMode('on')
+    if (flashMode === "on") {
+      setFlashMode("off");
+    } else if (flashMode === "off") {
+      setFlashMode("on");
     } else {
-      setFlashMode('auto')
+      setFlashMode("auto");
     }
-
-  }
+  };
 
   return (
     <>
-
-      <View style={styles.container} >
-        <Camera style={styles.camera} type={type} ref={cameraRef} flashMode={flashMode} 
+      <View style={styles.container}>
+        <Camera
+          style={styles.camera}
+          type={type}
+          ref={cameraRef}
+          flashMode={flashMode}
         >
           <View style={styles.bottomButtonsContainer}>
-            <TouchableOpacity onPress={toggleCameraType}>
-            </TouchableOpacity>
+            <TouchableOpacity onPress={toggleCameraType}></TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={onSnap}
               style={styles.capture}
             />
-            <TouchableOpacity onPress={__handleFlashMode}
-            >
-            </TouchableOpacity>
+            <TouchableOpacity onPress={__handleFlashMode}></TouchableOpacity>
           </View>
         </Camera>
-      </View >
-
-
+      </View>
     </>
   );
 }
@@ -107,36 +107,36 @@ export default function Camara() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   camera: {
     flex: 1,
   },
   button: {
     flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+    alignSelf: "flex-end",
+    alignItems: "center",
   },
   text: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
   },
   bottomButtonsContainer: {
-    position: 'absolute',
-    flexDirection: 'row',
+    position: "absolute",
+    flexDirection: "row",
     bottom: 28,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   capture: {
-    backgroundColor: '#5A45FF',
+    backgroundColor: "#5A45FF",
     borderRadius: 45,
     marginBottom: 28,
     height: 80,
     width: 80,
-    marginHorizontal: 30
+    marginHorizontal: 30,
   },
   preView: {
     alignSelf: "stretch",
