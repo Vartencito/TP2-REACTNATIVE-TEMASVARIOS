@@ -14,7 +14,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 
 const Home = ({ navigation }) => {
-  //accelerometer
   const [data, setData] = useState({
     x: 0,
     y: 0,
@@ -23,6 +22,7 @@ const Home = ({ navigation }) => {
   const [subscription, setSubscription] = useState(null);
   const [numE, setNumE] = useState("");
   const [image, setImage] = useState(null);
+  const [fondo, setFondo] = useState(null);
 
   const _subscribe = () => {
     setSubscription(
@@ -56,8 +56,6 @@ const Home = ({ navigation }) => {
     }
   }, [x, y, z]);
 
-  //seleccionar foto
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -70,20 +68,17 @@ const Home = ({ navigation }) => {
     }
   };
 
-  // const getImageFromLibrary = async () => {
-  //   const foto = await AsyncStorage.getItem("fondo");
-  //   if (foto === null) {
-  //     setImage(undefined);
-  //   } else {
-  //     setImage(foto);
-  //   }
-  // };
+  const getImageFromLibrary = async () => {
+    const foto = await AsyncStorage.getItem("fondo");
+    setFondo(foto)
+  };
 
-  // <ImageBackground source={{uri: 'https://reactjs.org/logo-og.png"'}} styles={{flex: 1, justifyContent: 'center', alignItems:'center'}}>
-  // </ImageBackground>
+  useEffect(()=>{
+    getImageFromLibrary();
+  },[getImageFromLibrary()])
 
   return (
-    <ImageBackground source={{ uri: image }} styles={styles.container}>
+    <ImageBackground source={{ uri: fondo }} styles={styles.container}>
       <View style={{ flexDirection: "row", padding: 10 }}>
         <Button
           title="Configurar número de emergencia"

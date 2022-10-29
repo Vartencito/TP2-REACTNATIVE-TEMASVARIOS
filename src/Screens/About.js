@@ -2,10 +2,10 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   Modal,
   Button,
   ImageBackground,
+  Vibration
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import QRCode from "react-native-qrcode-svg";
@@ -20,7 +20,12 @@ const About = () => {
 
   const getPermissions = async () => {
     const { status } = await BarCodeScanner.requestPermissionsAsync();
-    setHasPermission(status === "granted");
+    if(status === 'granted'){
+      setHasPermission(status === "granted");
+    } else{
+      alert('necesito permisos');
+      Vibration.vibrate();
+    }
   };
 
   const getImageFromLibrary = async () => {
@@ -32,13 +37,13 @@ const About = () => {
     }
   };
 
-  useEffect(() => {
-    getPermissions();
-  }, []);
-
   useEffect(()=>{
     getImageFromLibrary();
   },[image])
+
+  useEffect(() => {
+    getPermissions();
+  }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanData(data);
@@ -57,9 +62,6 @@ const About = () => {
       </Modal>
       <ImageBackground source={{ uri: image }} styles={styles.container}>
         <QRCode value="Hecho por valen y vicky" />
-        <TouchableOpacity style={styles.button}>
-          <Text>Escanear código QR</Text>
-        </TouchableOpacity>
         <BarCodeScanner
           style={{ height: 600, width: 300 }}
           onBarCodeScanned={scanData ? undefined : handleBarCodeScanned}

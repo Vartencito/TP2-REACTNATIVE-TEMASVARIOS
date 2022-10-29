@@ -5,6 +5,7 @@ import {
   TextInput,
   Button,
   Vibration,
+  ImageBackground,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -13,10 +14,12 @@ const NumeroEmergencia = () => {
   const [valor, setValor] = useState("");
   const [num, setNum] = useState("");
   const [numE, setNumE] = useState("");
+  const [image, setImage] = useState(null);
 
   const guardarNum = async () => {
     if (num.length < 17) {
-      alert("PONE BIEN EL NUM");
+      alert('pone bien el numero');
+      Vibration.vibrate();
     } else {
       setValor("");
       await AsyncStorage.setItem("Numero de emergencia", num);
@@ -27,7 +30,7 @@ const NumeroEmergencia = () => {
     const numLocal = await AsyncStorage.getItem("Numero de emergencia");
     setNumE(numLocal);
   };
-  
+
   useEffect(() => {
     if (valor.length > 8) {
       setValor(valor.substring(0, valor.length - 1));
@@ -41,9 +44,22 @@ const NumeroEmergencia = () => {
     obtenerNumE();
   }, [num]);
 
+  const getImageFromLibrary = async () => {
+    const foto = await AsyncStorage.getItem("fondo");
+    if (foto === null) {
+      setImage(null);
+    } else {
+      setImage(foto);
+    }
+  };
+
+  useEffect(() => {
+    getImageFromLibrary();
+  }, [image]);
+
   return (
     <>
-      <View style={styles.container}>
+      <ImageBackground style={styles.container} source={{ uri: image }}>
         <TextInput
           style={styles.TextInput}
           placeholder={"Ingrese el numero de emergencia"}
@@ -54,7 +70,7 @@ const NumeroEmergencia = () => {
         <Text style={{ margin: 10 }}>Nuevo número de emergencia: {num} </Text>
         <Button title="Guardar nuevo número" onPress={() => guardarNum()} />
         <Text style={{ margin: 10 }}>Número de emergencia actual: {numE} </Text>
-      </View>
+      </ImageBackground>
     </>
   );
 };

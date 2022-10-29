@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -13,6 +14,7 @@ const VideoFav = () => {
   const [URL, setURL] = useState(null);
   const video = useRef(null);
   const [status, setStatus] = useState({});
+  const [image, setImage] = useState(null);
 
   const guardarVideo = async () => {
     try {
@@ -40,9 +42,22 @@ const VideoFav = () => {
     obtenerVideo();
   }, []);
 
+  const getImageFromLibrary = async () => {
+    const foto = await AsyncStorage.getItem("fondo");
+    if (foto === null) {
+      setImage(null);
+    } else {
+      setImage(foto);
+    }
+  };
+
+  useEffect(() => {
+    getImageFromLibrary();
+  }, [image]);
+
   return (
     <>
-      <View style={styles.container}>
+      <ImageBackground style={styles.container} source={{ uri: image }}>
         <View style={{ flexDirection: "row" }}>
           <TextInput
             style={styles.TextInput}
@@ -73,7 +88,7 @@ const VideoFav = () => {
         ) : (
           <Text style={{ margin: 10 }}>Ingrese un video</Text>
         )}
-      </View>
+      </ImageBackground>
     </>
   );
 };

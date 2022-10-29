@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ImageBackground,
+  Vibration,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import * as Contacts from "expo-contacts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -6,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Contactos = () => {
   const [contacts, setContacts] = useState([]);
   const [numE, setNumE] = useState([]);
+  const [image, setImage] = useState(null);
 
   //HAY QUE MOSTRAR CUAL ES EL NUM DE EMERGENCIA
   const obtenerNumE = async () => {
@@ -41,18 +49,34 @@ const Contactos = () => {
         }
         setContacts(template);
       }
+    } else {
+      alert('necesito permisos');
+      Vibration.vibrate();
     }
   };
 
   useEffect(() => {
-    obtenerNumE()
-    if(numE !== null){
+    obtenerNumE();
+    if (numE !== null) {
       getContacts();
     }
   }, [numE]);
 
+  const getImageFromLibrary = async () => {
+    const foto = await AsyncStorage.getItem("fondo");
+    if (foto === null) {
+      setImage(null);
+    } else {
+      setImage(foto);
+    }
+  };
+
+  useEffect(() => {
+    getImageFromLibrary();
+  }, [image]);
+
   return (
-    <View style={styles.container}>
+    <ImageBackground style={styles.container} source={{uri: image}}>
       <FlatList
         data={contacts}
         renderItem={({ item }) => (
@@ -61,12 +85,16 @@ const Contactos = () => {
               <Text style={styles.data}>Nombre: {item.firstName}</Text>
               <Text style={styles.data}>Apellido: {item.lastName}</Text>
               <Text style={styles.data}>Número: {item.phoneNumber}</Text>
-              {item.emergency === true ? <Text style={styles.emergency}>CONTACTO DE EMERGENCIA!!!!! 🆘</Text> : null}
+              {item.emergency === true ? (
+                <Text style={styles.emergency}>
+                  CONTACTO DE EMERGENCIA!!!!! 🆘
+                </Text>
+              ) : null}
             </View>
           </>
         )}
       />
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -84,10 +112,10 @@ const styles = StyleSheet.create({
   data: {
     fontSize: 25,
   },
-  emergency:{
+  emergency: {
     fontSize: 25,
-    color: 'red',
-  }
+    color: "red",
+  },
 });
 
 export default Contactos;

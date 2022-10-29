@@ -8,6 +8,7 @@ import {
   View,
   SafeAreaView,
   Image,
+  Vibration
 } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 
@@ -24,17 +25,27 @@ export default function Camara() {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
       const libPermission = await MediaLibrary.requestPermissionsAsync();
-      setPermission(cameraPermission);
-      setLibraryPermission(libPermission);
+      if(cameraPermission !== 'granted'){
+        alert('necesito permisos');
+        Vibration.vibrate();
+      } else{
+        setPermission(cameraPermission);
+      }
+      if(libPermission !== 'granted'){
+        alert('necesito permisos');
+        Vibration.vibrate();
+      } else{
+        setLibraryPermission(libPermission);
+      }
     })();
   }, []);
 
   if (permission === undefined) {
-    return <Text>Requesting permissions...</Text>;
+    return <Text>Pidiendo permisos...</Text>;
   } else if (!permission) {
     return (
       <Text>
-        Permission not granted. Please re-check that in your settings.
+        No se otorgaron permisos, cambialo en configuración
       </Text>
     );
   }
