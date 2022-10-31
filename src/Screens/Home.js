@@ -6,12 +6,17 @@ import {
   Linking,
   Image,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useRef } from "react";
 import { Accelerometer } from "expo-sensors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
+
+
 
 const Home = ({ navigation }) => {
   const [data, setData] = useState({
@@ -78,54 +83,89 @@ const Home = ({ navigation }) => {
   },[getImageFromLibrary()])
 
   return (
-    <ImageBackground source={{ uri: fondo }} styles={styles.container}>
-      <View style={{ flexDirection: "row", padding: 10 }}>
-        <Button
-          title="Configurar número de emergencia"
-          color={"#B6DCB6"}
-          onPress={() => navigation.navigate("NumeroEmergencia")}
-        />
-      </View>
-      <View style={{ flexDirection: "row", padding: 10 }}>
-        <Button
-          title="Ver mis contactos"
-          color={"#D2E9E1"}
-          onPress={() => navigation.navigate("Contactos")}
-        />
-      </View>
-      <View style={{ flexDirection: "row", padding: 10 }}>
-        <Button
-          title="Ver Hora y temperatura"
-          color={"coral"}
-          onPress={() => navigation.navigate("HoraTemperatura")}
-        />
-      </View>
-      <View style={{ flexDirection: "row", padding: 10 }}>
-        <Button
-          title="Video Favorito"
-          color={"#F8DDA9"}
-          onPress={() => navigation.navigate("VideoFav")}
-        />
-      </View>
-      <View style={{ flexDirection: "row", padding: 10 }}>
-        <Button
-          title="About"
-          color={"#FCB6D0"}
-          onPress={() => navigation.navigate("About")}
-        />
-      </View>
-      <View style={{ flexDirection: "row", padding: 10 }}>
-        <Button
-          title="tomar foto"
-          color={"#B399D4"}
-          onPress={() => navigation.navigate("Camara")}
-        />
-        <Button
-          title="cambiar fondo"
-          color={"#B399D4"}
-          onPress={() => pickImage()}
-        />
-      </View>
+    <ImageBackground source={{ uri: fondo }}>
+    
+        <View style={{alignItems: "center", justifyContent: "center"}}>
+       
+        <TouchableOpacity >
+     
+    <View style={{flexDirection: "row"}}>
+      <Ionicons   
+      onPress={() => navigation.navigate("NumeroEmergencia")}
+                      name="person-add-outline"
+                      color="#0062ff"
+                      size={80}
+                      style={{ padding: "10%" }}
+                    />
+
+<Ionicons   
+      onPress={() => navigation.navigate("Contactos")}
+                      name="people-outline"
+                      color="#0062ff"
+                      size={80}
+                      style={{ padding: "10%" }}
+                    />
+                    </View>
+          </TouchableOpacity>
+
+      <TouchableOpacity >
+     
+     <View style={{flexDirection: "row"}}>
+       <Ionicons   
+       onPress={() => navigation.navigate("HoraTemperatura")}
+                       name="time-outline"
+                       color="#0062ff"
+                       size={80}
+                       style={{ padding: "10%" }}
+                     />
+ 
+ <Ionicons   
+       onPress={() => navigation.navigate("VideoFav")}
+                       name="videocam-outline"
+                       color="#0062ff"
+                       size={80}
+                       style={{ padding: "10%" }}
+                     />
+                     </View>
+           </TouchableOpacity>
+
+
+
+           <TouchableOpacity >
+     
+     <View style={{flexDirection: "row"}}>
+       <Ionicons   
+       onPress={() => navigation.navigate("Camara")}
+                       name="camera-outline"
+                       color="#0062ff"
+                       size={80}
+                       style={{ padding: "10%" }}
+                     />
+ 
+ <Ionicons   
+                       name="image-outline"
+                       color="#0062ff"
+                       size={80}
+                       style={{ padding: "10%" }}
+                       onPress={() => pickImage()}
+                     />
+                     </View>
+           </TouchableOpacity>
+
+           <TouchableOpacity >
+     
+     <Ionicons   
+     onPress={() => navigation.navigate("About")}
+                     name="qr-code-outline"
+                     color="#0062ff"
+                     size={80}
+                     style={{ padding: "10%" }}
+                   />
+
+
+         </TouchableOpacity>
+         </View>
+
       <StatusBar style="auto" />
     </ImageBackground>
   );
@@ -136,7 +176,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "",
+    justifyContent: "center",
     margin: 10,
   },
 });

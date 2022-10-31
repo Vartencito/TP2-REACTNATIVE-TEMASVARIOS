@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   ImageBackground,
+  Pressable,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -65,12 +66,12 @@ const VideoFav = () => {
             placeholder={"URL del video"}
             onChangeText={setURL}
           />
-          <TouchableOpacity
-            style={styles.button}
+          <Pressable
+            style={styles.boton}
             onPress={() => guardarVideo()}
           >
-            <Text>Guardar URL</Text>
-          </TouchableOpacity>
+            <Text style={{color: "#fff", fontWeight: "bold"}}>Guardar URL</Text>
+          </Pressable>
         </View>
         {/* <View style={styles.VideoPlayer}></View> */}
         {URL ? (
@@ -101,28 +102,36 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     margin: 10,
   },
-  TextInput: {
-    borderWidth: 1,
-    width: 150,
-    padding: 10,
-    margin: 10,
-  },
   VideoPlayer: {
     width: 390,
     height: 200,
     padding: 10,
     margin: 10,
   },
-  button: {
-    backgroundColor: "#C6E5B1",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 60,
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
-    width: 100,
-  },
+    TextInput: {
+      backgroundColor: "#fff",
+      width: 260,
+      padding: 10,
+      margin: 10,
+      alignItems: "center",
+      borderRadius: 10,
+      hadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 3,
+      },
+      shadowOpacity: 0.27,
+      shadowRadius: 4.65,
+      
+      elevation: 6,
+    },
+    boton: {
+      backgroundColor: "#0062ff",
+      padding: "3%",
+      borderRadius: 10,
+      height: 50,
+      justifyContent: "center"
+    }
 });
 
 export default VideoFav;

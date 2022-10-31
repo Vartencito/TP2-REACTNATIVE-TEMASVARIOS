@@ -14,7 +14,7 @@ const MainStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={Home}  options={{ headerShown: false }}/>
         <Stack.Screen name="NumeroEmergencia" component={NumeroEmergencia} />
         <Stack.Screen name="Contactos" component={Contactos} />
         <Stack.Screen name="HoraTemperatura" component={HoraTemperatura} />

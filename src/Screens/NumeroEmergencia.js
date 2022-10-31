@@ -6,6 +6,7 @@ import {
   Button,
   Vibration,
   ImageBackground,
+  Pressable
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -67,8 +68,13 @@ const NumeroEmergencia = () => {
           value={valor}
           onChangeText={(value) => setValor(value)}
         />
+
         <Text style={{ margin: 10 }}>Nuevo número de emergencia: {num} </Text>
-        <Button title="Guardar nuevo número" onPress={() => guardarNum()} />
+
+        <Pressable
+        style={styles.boton}
+         onPress={() => guardarNum()} 
+        ><Text style={{color: "#fff", fontWeight: "bold"}}>Guardar nuevo número</Text></Pressable>
         <Text style={{ margin: 10 }}>Número de emergencia actual: {numE} </Text>
       </ImageBackground>
     </>
@@ -81,15 +87,30 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    margin: 10,
+    margin: 10
   },
   TextInput: {
-    borderWidth: 1,
+    backgroundColor: "#fff",
     width: 300,
     padding: 10,
     margin: 10,
     alignItems: "center",
+    borderRadius: 10,
+    hadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    
+    elevation: 6,
   },
+  boton: {
+    backgroundColor: "#0062ff",
+    padding: "3%",
+    borderRadius: 10
+  }
 });
 
 export default NumeroEmergencia;
